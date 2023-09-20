@@ -10,6 +10,16 @@ function initializeGame() {
     // Use the variable dimensions instead of hard coding the number five.
 }
 
+function initializeGame() {
+    for (let y = 0; y < dimensions; y++) {
+        const row = [];
+        for (let x = 0; x < dimensions; x++) {
+            row.push('');
+        }
+        board.push(row);
+    }
+}
+
 function nextTurn() {
     if (turn === 'X') {
         turn = 'O';
@@ -34,9 +44,31 @@ function expandBoard(direction) {
     // TODO: Task 2 B
     // This function adds a column or a row to the board
     // depending on the direction it gets as an argument.
-
-    drawBoard();
+   
+        if (direction === 'LEFT') {
+            for (let y = 0; y < dimensions; y++) {
+                board[y].unshift('');
+            }
+            dimensions++;
+        } else if (direction === 'RIGHT') {
+            for (let y = 0; y < dimensions; y++) {
+                board[y].push('');
+            }
+            dimensions++;
+        } else if (direction === 'UP') {
+            const newRow = Array(dimensions).fill('');
+            board.unshift(newRow);
+            dimensions++;
+        } else if (direction === 'DOWN') {
+            const newRow = Array(dimensions).fill('');
+            board.push(newRow);
+            dimensions++;
+        }
+    
+    drawBoard(); // Redraw the board with the new dimensions
 }
+    
+
 
 function handleClick(event) {
     let square = event.target;
@@ -66,9 +98,20 @@ function handleClick(event) {
         expandBoard('DOWN');
     }
     */
+    if (x === 0) {
+        expandBoard('LEFT');
+    } else if (x === dimensions - 1) {
+        expandBoard('RIGHT');
+    }
+    if (y === 0) {
+        expandBoard('UP');
+    } else if (y === dimensions - 1) {
+        expandBoard('DOWN');
+    }
 
     nextTurn();
 }
+
 
 function createSquare(boardDiv, x, y) {
     let element = document.createElement('div');
