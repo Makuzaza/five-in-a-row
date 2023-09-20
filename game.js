@@ -8,9 +8,7 @@ function initializeGame() {
     // Initialize the game board to be an array of five arrays.
     // Each of the inner arrays should contain five empty strings.
     // Use the variable dimensions instead of hard coding the number five.
-}
 
-function initializeGame() {
     for (let y = 0; y < dimensions; y++) {
         const row = [];
         for (let x = 0; x < dimensions; x++) {
@@ -38,7 +36,41 @@ function checkWin(x, y) {
     // If any of them contain same character as the current turn,
     // keep on checking to that direction -- and to the opposite!
     // Number of the stones needed is in variable winLength.
+
+    const directions = [
+        [-1, -1], [-1, 0], [-1, 1], 
+        [0, -1], [0, 1],       
+        [1, -1], [1, 0], [1, 1]   
+    ];
+
+    const currentPlayer = board[y][x];
+
+    for (const [dx, dy] of directions) {
+        let count = 1; 
+
+        for (let i = 1; i < winLength; i++) {
+            const newX = x + i * dx;
+            const newY = y + i * dy;
+
+            if (newX >= 0 && newX < dimensions && newY >= 0 && newY < dimensions) {
+                if (board[newY][newX] === currentPlayer) {
+                    count++;
+                } else {
+                    break;  
+                }
+            } else {
+                break;  
+            }
+        }
+
+        if (count >= winLength) {
+            return true;
+        }
+    }
+
+    return false; 
 }
+
 
 function expandBoard(direction) {
     // TODO: Task 2 B
@@ -67,8 +99,6 @@ function expandBoard(direction) {
     
     drawBoard(); // Redraw the board with the new dimensions
 }
-    
-
 
 function handleClick(event) {
     let square = event.target;
