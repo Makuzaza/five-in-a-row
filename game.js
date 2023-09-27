@@ -37,40 +37,59 @@ function checkWin(x, y) {
     // keep on checking to that direction -- and to the opposite!
     // Number of the stones needed is in variable winLength.
 
-    const directions = [
-        [-1, -1], [-1, 0], [-1, 1], 
-        [0, -1], [0, 1],       
-        [1, -1], [1, 0], [1, 1]   
-    ];
-
     const currentPlayer = board[y][x];
-
+    
+        // Define the directions to check: horizontal, vertical, and diagonal
+    const directions = [
+        [0, 1],  // Right
+        [1, 0],  // Down
+        [1, 1],  // Diagonal down-right
+        [-1, 1]  // Diagonal down-left
+    ];
+    
     for (const [dx, dy] of directions) {
-        let count = 1; 
-
+        let count = 1;
+    
+            // Check in one direction
         for (let i = 1; i < winLength; i++) {
             const newX = x + i * dx;
             const newY = y + i * dy;
-
+    
             if (newX >= 0 && newX < dimensions && newY >= 0 && newY < dimensions) {
                 if (board[newY][newX] === currentPlayer) {
                     count++;
                 } else {
-                    break;  
+                    break;
                 }
             } else {
-                break;  
+                break;
             }
         }
-
+    
+            // Check in the opposite direction
+        for (let i = 1; i < winLength; i++) {
+            const newX = x - i * dx;
+            const newY = y - i * dy;
+    
+            if (newX >= 0 && newX < dimensions && newY >= 0 && newY < dimensions) {
+                if (board[newY][newX] === currentPlayer) {
+                    count++;
+                } else {
+                    break;
+                    }
+            } else {
+                break;
+            }
+        }
+    
         if (count >= winLength) {
             return true;
         }
     }
-
-    return false; 
+    
+    return false;
 }
-
+    
 
 function expandBoard(direction) {
     // TODO: Task 2 B
@@ -84,8 +103,7 @@ function expandBoard(direction) {
             dimensions++;
         } else if (direction === 'RIGHT') {
             for (let y = 0; y < dimensions; y++) {
-                board[y].push('');
-            }
+                board[y].push('');}
             dimensions++;
         } else if (direction === 'UP') {
             const newRow = Array(dimensions).fill('');
